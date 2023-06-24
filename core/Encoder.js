@@ -892,11 +892,14 @@ function encRegPrime(reg, floatReg=false) {
 
 // Convert memory ordering to binary
 function encMem(input) {
-  let bits = '';
+  // Default input to 'iorw'
+  input = input ?? 'iorw';
 
   // I: Device input, O: device output, R: memory reads, W: memory writes
   const access = ['i', 'o', 'r', 'w'];
 
+  // Construct bits from input character flags
+  let bits = '';
   let one_count = 0;
   for (let i = 0; i < access.length; i++) {
     if (input.includes(access[i])) {
