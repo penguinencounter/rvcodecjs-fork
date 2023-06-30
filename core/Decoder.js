@@ -7,7 +7,7 @@
  */
 
 import { BASE, XLEN_MASK,
-  FIELDS, OPCODE, C_OPCODE, REGISTER, FLOAT_REGISTER, CSR,
+  FIELDS, OPCODE, C_OPCODE, REGISTER, FLOAT_REGISTER, FLOAT_ROUNDING_MODE, CSR,
   ISA_OP, ISA_OP_32, ISA_OP_64, ISA_OP_IMM, ISA_OP_IMM_32, ISA_OP_IMM_64,
   ISA_LOAD, ISA_STORE, ISA_BRANCH, ISA_MISC_MEM, ISA_SYSTEM, ISA_AMO,
   ISA_LOAD_FP, ISA_STORE_FP, ISA_OP_FP,
@@ -364,7 +364,7 @@ export class Decoder {
     const useRm = inst.funct3 === undefined;
     const f = {
       opcode: new Frag(FRAG.OPC, this.#mne, this.#opcode, FIELDS.opcode.name),
-      funct3: new Frag(FRAG.OPC, this.#mne, funct3, useRm ? 'rm' : FIELDS.funct3.name),
+      funct3: new Frag(FRAG.OPC, this.#mne, funct3, FIELDS.funct3.name),
       funct5: new Frag(FRAG.OPC, this.#mne, funct5, FIELDS.r_funct5.name),
       fmt:    new Frag(FRAG.OPC, this.#mne, fmt, FIELDS.r_fp_fmt.name),
       rd:     new Frag(FRAG.RD, dest, rd, FIELDS.rd.name),
@@ -377,6 +377,16 @@ export class Decoder {
     if (useRs2) {
       f['rs2'].id = FRAG.RS2;
       this.asmFrags.push(f['rs2']);
+    }
+    if (useRm) {
+      f['funct3'].field = FIELDS.r_fp_rm.name;
+      const frm = decFrm(funct3);
+      // Push frm assembly operand unless using "dyn" dynamic mode
+      if (frm !== 'dyn') {
+        f['funct3'].id = FRAG.FRM;
+        f['funct3'].asm = frm;
+        this.asmFrags.push(f['funct3']);
+      }
     }
 
     // Binary fragments from MSB to LSB
@@ -1005,7 +1015,7 @@ export class Decoder {
       fmt = fields['fmt'],
       rs2 = fields['rs2'],
       rs1 = fields['rs1'],
-      rm = fields['funct3'],
+      funct3 = fields['funct3'],
       rd = fields['rd'];
 
     // Find instruction
@@ -1031,13 +1041,14 @@ export class Decoder {
     const src1 = decReg(rs1, true),
           src2 = decReg(rs2, true),
           src3 = decReg(rs3, true),
+          frm  = decFrm(funct3),
           dest = decReg(rd, true);
 
     // Create fragments
     const f = {
       opcode: new Frag(FRAG.OPC, this.#mne, this.#opcode, FIELDS.opcode.name),
       fmt:    new Frag(FRAG.OPC, this.#mne, fmt, FIELDS.r_fp_fmt.name),
-      rm:     new Frag(FRAG.OPC, this.#mne, rm, 'rm'),
+      funct3: new Frag(FRAG.OPC, this.#mne, funct3, FIELDS.r_fp_rm.name),
       rd:     new Frag(FRAG.RD, dest, rd, FIELDS.rd.name),
       rs1:    new Frag(FRAG.RS1, src1, rs1, FIELDS.rs1.name),
       rs2:    new Frag(FRAG.RS2, src2, rs2, FIELDS.rs2.name),
@@ -1046,10 +1057,15 @@ export class Decoder {
 
     // Assembly fragments in order of instruction
     this.asmFrags.push(f['opcode'], f['rd'], f['rs1'], f['rs2'], f['rs3']);
+    if (frm !== 'dyn') {
+      f['funct3'].id = FRAG.FRM;
+      f['funct3'].asm = frm;
+      this.asmFrags.push(f['funct3']);
+    }
 
     // Binary fragments from MSB to LSB
-    this.binFrags.push(f['rs3'], f['fmt'], f['rs2'], f['rs1'], f['rm'], f['rd'],
-      f['opcode']);
+    this.binFrags.push(f['rs3'], f['fmt'], f['rs2'], f['rs1'], f['funct3'],
+      f['rd'], f['opcode']);
   }
 
   /**
@@ -1883,6 +1899,20 @@ function decCSR(binStr) {
     : ('0x' + val.toString(16).padStart(3, '0'));
 
   return csr;
+}
+
+// search for float rounding mode name from the given binary string
+function decFrm(binstr) {
+  // decode binary string into numerical value
+  const val = parseInt(binstr, BASE.bin);
+
+  // attempt to search for entry in csr object with matching value
+  const entry = Object.entries(FLOAT_ROUNDING_MODE).find(e => e[1] === val);
+  if (entry === undefined) {
+    throw `Invalid float rounding mode field`
+  }
+
+  return entry[0];
 }
 
 // Convert C instruction immediate bit configurations
