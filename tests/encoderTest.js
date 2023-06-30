@@ -266,12 +266,12 @@ function enc_rv32f_madd_fmadds() {
 }
 
 function enc_rv32f_nmsub_fnmsubs() {
-    let inst = new Instruction('fnmsub.s f2, f4, f8, f16');
-    assertEq(inst.bin, '10000000100000100111000101001011');
+    let inst = new Instruction('fnmsub.s f2, f4, f8, f16, rup');
+    assertEq(inst.bin, '10000000100000100011000101001011');
 }
 
 function enc_rv32f_opfp_fadds() {
-    let inst = new Instruction('fadd.s f5, f9, f17');
+    let inst = new Instruction('fadd.s f5, f9, f17, dyn');
     assertEq(inst.bin, '00000001000101001111001011010011');
 }
 
@@ -295,9 +295,9 @@ function enc_rv32f_opfp_fmvwx() {
 }
 
 function enc_rv64f_opfp_fcvtlus() {
-    let inst = new Instruction('fcvt.lu.s x14, f1');
-    let instAbi = new Instruction('fcvt.lu.s a4, ft1');
-    assertEq(inst.bin, '11000000001100001111011101010011');
+    let inst = new Instruction('fcvt.lu.s x14, f1, rmm');
+    let instAbi = new Instruction('fcvt.lu.s a4, ft1, rmm');
+    assertEq(inst.bin, '11000000001100001100011101010011');
     assertEq(instAbi.bin, inst.bin);
 }
 
@@ -331,8 +331,8 @@ function enc_rv32d_msub_fmsubd() {
 }
 
 function enc_rv32d_opfp_fsubd() {
-    let inst = new Instruction('fsub.d f4, f8, f16');
-    assertEq(inst.bin, '00001011000001000111001001010011');
+    let inst = new Instruction('fsub.d f4, f8, f16, rtz');
+    assertEq(inst.bin, '00001011000001000001001001010011');
 }
 
 function enc_rv32d_opfp_fsgnjnd() {
@@ -362,9 +362,9 @@ function enc_rv64d_opfp_fmvxd() {
 }
 
 function enc_rv128d_opfp_fcvttud() {
-    let inst = new Instruction('fcvt.tu.d x10, f8');
-    let instAbi = new Instruction('fcvt.tu.d a0, fs0');
-    assertEq(inst.bin, '11000010010101000111010101010011');
+    let inst = new Instruction('fcvt.tu.d x10, f8, RDN');
+    let instAbi = new Instruction('fcvt.tu.d a0, fs0, RDN');
+    assertEq(inst.bin, '11000010010101000010010101010011');
     assertEq(instAbi.bin, inst.bin);
 }
 
@@ -386,8 +386,8 @@ function enc_rv32q_storefp_fsq() {
 }
 
 function enc_rv32q_nmadd_fnmaddq() {
-    let inst = new Instruction('fnmadd.q f1, f5, f13, f29');
-    assertEq(inst.bin, '11101110110100101111000011001111');
+    let inst = new Instruction('fnmadd.q f1, f5, f13, f29, rmm');
+    assertEq(inst.bin, '11101110110100101100000011001111');
 }
 
 function enc_rv32q_opfp_fsqrtq() {
@@ -408,12 +408,12 @@ function enc_rv32q_opfp_fclassq() {
 }
 
 function enc_rv32q_opfp_fcvtqd() {
-    let inst = new Instruction('fcvt.q.d f7, f8');
-    assertEq(inst.bin, '01000110000101000111001111010011');
+    let inst = new Instruction('fcvt.q.d f7, f8, rne');
+    assertEq(inst.bin, '01000110000101000000001111010011');
 }
 
 function enc_rv32q_opfp_fcvtsq() {
-    let inst = new Instruction('fcvt.s.q f6, f9');
+    let inst = new Instruction('fcvt.s.q f6, f9, dyn');
     assertEq(inst.bin, '01000000001101001111001101010011');
 }
 
