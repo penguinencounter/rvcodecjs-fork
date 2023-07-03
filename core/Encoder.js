@@ -6,7 +6,9 @@
  * Copyright (c) 2021-2022 LupLab @ UC Davis
  */
 
-import { BASE, XLEN_MASK, FIELDS, OPCODE, ISA, REGISTER, FLOAT_REGISTER, CSR } from './Constants.js'
+import { BASE, XLEN_MASK, FIELDS, OPCODE, ISA,
+  REGISTER, FLOAT_REGISTER, FLOAT_ROUNDING_MODE, CSR
+} from './Constants.js'
 
 import { COPTS_ISA } from './Config.js'
 
@@ -238,7 +240,10 @@ export class Encoder {
    */
   #encodeOP_FP() {
     // Get operands
-    const dest = this.#opr[0], src1 = this.#opr[1], src2 = this.#opr[2];
+    const dest = this.#opr[0],
+          src1 = this.#opr[1],
+          src2 = this.#opr[2],
+          frm  = this.#inst.rs2 !== undefined ? this.#opr[2] : this.#opr[3];
 
     // Convert to binary representation
     let floatRd = true;
@@ -254,10 +259,10 @@ export class Encoder {
     const rd = encReg(dest, floatRd),
       rs1 = encReg(src1, floatRs1),
       rs2 = this.#inst.rs2 ?? encReg(src2, true),
-      rm = this.#inst.funct3 ?? '111'; // funct3 or dynamic rounding mode
+      funct3 = this.#inst.funct3 ?? encFrm(frm) ?? '111' /* dyn rm */;
 
     // Construct binary instruction
-    this.bin = this.#inst.funct5 + this.#inst.fp_fmt + rs2 + rs1 + rm + rd +
+    this.bin = this.#inst.funct5 + this.#inst.fp_fmt + rs2 + rs1 + funct3 + rd +
       this.#inst.opcode;
   }
 
@@ -534,15 +539,16 @@ export class Encoder {
   #encodeR4() {
     // Get operands
     const dest = this.#opr[0], src1 = this.#opr[1],
-      src2 = this.#opr[2], src3 = this.#opr[3];
+      src2 = this.#opr[2], src3 = this.#opr[3],
+      frm = this.#opr[4];
 
     // Convert to binary representation
     const rd = encReg(dest, true), rs1 = encReg(src1, true),
       rs2 = encReg(src2, true), rs3 = encReg(src3, true),
-      fmt = this.#inst.fp_fmt, rm = '111'; // dynamic rounding mode
+      fmt = this.#inst.fp_fmt, funct3 = encFrm(frm) ?? '111' /* dyn rm */;
 
     // Construct binary instruction
-    this.bin = rs3 + fmt + rs2 + rs1 + rm + rd +
+    this.bin = rs3 + fmt + rs2 + rs1 + funct3 + rd +
       this.#inst.opcode;
   }
 
@@ -933,4 +939,18 @@ function encCSR(csr) {
   }
 
   return encImm(csrVal, FIELDS.i_csr.pos[1]);
+}
+
+// Convert float rounding mode name to binary
+function encFrm(frm) {
+  // Default input to 'dyn'
+  frm = frm ?? 'dyn';
+
+  // Lookup name in frm table
+  const frmVal = FLOAT_ROUNDING_MODE[frm];
+  if (frmVal === undefined) {
+    throw `Invalid float rounding mode field '${frm}'`
+  }
+
+  return encImm(frmVal, FIELDS.r_fp_rm.pos[1]);
 }

@@ -23,6 +23,7 @@ const fragColorMap = {
   [FRAG.RS2]: '--color-magenta',
   [FRAG.RS3]: '--color-blue',
   [FRAG.SUCC]: '--color-magenta',
+  [FRAG.FRM]: '--color-cyan',
 }
 
 /* Fast access to selected document elements */

@@ -71,6 +71,7 @@ export const FIELDS = {
 
   // R-type: FP specific fields
   r_fp_fmt: { pos: [26, 2], name: 'fmt' },
+  r_fp_rm:  { pos: [14, 3], name: 'rm' },
 
   // I-type
   i_imm_11_0: { pos: [31, 12], name: 'imm[11:0]' },
@@ -1129,6 +1130,15 @@ export const FLOAT_REGISTER = {
   ft11: "f31",
 }
 
+export const FLOAT_ROUNDING_MODE = {
+  "rne": 0b000,
+  "rtz": 0b001,
+  "rdn": 0b010,
+  "rup": 0b011,
+  "rmm": 0b100,
+  "dyn": 0b111,
+}
+
 // CSR Encodings
 export const CSR = {
   cycle:          0xc00,
@@ -1459,6 +1469,7 @@ export const FRAG = {
   RS2: 8,
   RS3: 9,
   SUCC: 10,
+  FRM: 11,
 }
 
 // Entire ISA
