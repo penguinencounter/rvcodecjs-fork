@@ -926,7 +926,8 @@ function encMem(input) {
 // Convert CSR (name or imm) to binary
 function encCSR(csr) {
   // Attempt to find CSR value from CSR name map
-  let csrVal = CSR[csr];
+  // - If `csr` is undefined, default to `cycle`
+  let csrVal = CSR[csr ?? 'cycle'];
 
   // If failed, attempt to parse as immediate
   if (csrVal === undefined) {

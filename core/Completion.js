@@ -77,8 +77,9 @@ export const CANONICAL_OPERANDS_BY_OPCODE = {
 
 // Instruction mnemonic regex paird with canonical operand strings
 const CANONICAL_OPERANDS_EXCEPTIONS_REGEX = [
-  [/^lq$/,                   'rd, offset(rs1)'],
+  [/^lq/,                    'rd, offset(rs1)'],
   [/^lr\./,                  'rd, (rs1)'],
+  [/^csr.*i/,                'rd, csr, uimm'],
   [/^csr/,                   'rd, csr, rs1'],
   [/^fence\.i/,              ''],
   [/^fsqrt\./,               'frd, frs1'],
