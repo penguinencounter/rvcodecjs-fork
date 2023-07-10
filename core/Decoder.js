@@ -417,12 +417,12 @@ export class Decoder {
       opcode: new Frag(FRAG.OPC, this.#mne, this.#opcode, FIELDS.opcode.name),
       funct3: new Frag(FRAG.OPC, this.#mne, funct3, FIELDS.funct3.name),
       rd:     new Frag(FRAG.RD, dest, rd, FIELDS.rd.name),
-      rs1:    new Frag(FRAG.RS1, base, rs1, FIELDS.rs1.name),
+      rs1:    new Frag(FRAG.RS1, base, rs1, FIELDS.rs1.name, true),
       imm:    new Frag(FRAG.IMM, offset, imm, FIELDS.i_imm_11_0.name),
     };
 
     // Assembly fragments in order of instruction
-    this.asmFrags.push(f['opcode'], f['rd'], f['rs1'], f['imm']);
+    this.asmFrags.push(f['opcode'], f['rd'], f['imm'], f['rs1']);
 
     // Binary fragments from MSB to LSB
     this.binFrags.push(f['imm'], f['rs1'], f['funct3'], f['rd'], f['opcode']);

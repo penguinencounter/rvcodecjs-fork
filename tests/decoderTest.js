@@ -33,8 +33,8 @@ function dec_rv32i_jal_jal() {
 function dec_rv32i_jalr_jalr() {
     let inst = new Instruction('01010101010100010000000011100111');
     let instAbi = new Instruction('01010101010100010000000011100111', { ABI:true });
-    assertEq(inst.asm, 'jalr x1, x2, 1365');
-    assertEq(instAbi.asm, 'jalr ra, sp, 1365');
+    assertEq(inst.asm, 'jalr x1, 1365(x2)');
+    assertEq(instAbi.asm, 'jalr ra, 1365(sp)');
 }
 
 // BRANCH
