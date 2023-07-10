@@ -30,8 +30,8 @@ function enc_rv32i_jal_jal() {
 
 // JALR
 function enc_rv32i_jalr_jalr() {
-    let inst = new Instruction('jalr x16, x5, 24');
-    let abiInst = new Instruction('jalr a6, t0, 24');
+    let inst = new Instruction('jalr x16, 24(x5)');
+    let abiInst = new Instruction('jalr a6, 24(t0)');
     assertEq(inst.bin, '00000001100000101000100001100111');
     assertEq(abiInst.bin, inst.bin);
 }
