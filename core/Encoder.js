@@ -271,7 +271,7 @@ export class Encoder {
    */
   #encodeJALR() {
     // Get operands
-    const dest = this.#opr[0], base = this.#opr[1], offset = this.#opr[2];
+    const dest = this.#opr[0], offset = this.#opr[1], base = this.#opr[2];
 
     // Convert to binary representation
     const rd = encReg(dest), rs1 = encReg(base),
