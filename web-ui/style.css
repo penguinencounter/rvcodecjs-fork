@@ -258,6 +258,18 @@ body {
     grid-template-columns: 4fr 0.15fr 0.05fr;
 }
 
+#error-row {
+    display: block;
+    width: 80%;
+    height: 4ch;
+    line-height: 4ch;
+
+    /* Handle very long text */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* Binary representation */
 #binary-data {
     height: fit-content;
