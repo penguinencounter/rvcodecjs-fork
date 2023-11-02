@@ -255,7 +255,7 @@ body {
 
 .result-row-data {
     place-content: center start;
-    grid-template-columns: 4fr 0.15fr 0.05fr;
+    grid-template-columns: 3.75fr 0.15fr 0.1fr 0.15fr 0.05fr;
 }
 
 #error-row {
@@ -305,7 +305,7 @@ body {
     /* Create a gap between this data row and the title row of the next data */
     .result-row-data {
         margin-bottom: 0.75ch;
-        grid-template-columns: 4fr 0.2fr;
+        grid-template-columns: 3.75fr 0.2fr 0.1fr 0.2fr;
     }
 
     /* No gap for the last data */
@@ -377,26 +377,31 @@ body {
     position: absolute;
 }
 
-/*css the copy-button and the row-data*/
-.copy-button {
+/* CSS the buttons and their tooltip in result row */
+.result-button {
     margin: auto 0;
     height: 1.5rem;
     background-color: inherit;
     border: none;
-    background: url("./assets/copy-icon.svg") no-repeat center;
     cursor: pointer;
     position: relative;
     display: inline-block;
 }
 
-.copy-button:active {
+.result-button:active {
     background: url("./assets/check-icon.svg") no-repeat center;
 }
 
-/*css the tooltip*/
-.copy-tooltip {
+.result-button:hover .button-tooltip {
+    visibility: visible;
+}
+
+.result-button:active .button-tooltip {
     visibility: hidden;
-    width: 3rem;
+}
+
+.button-tooltip {
+    visibility: hidden;
     background-color: var(--color-fg);
     color: var(--color-bg);
     text-align: center;
@@ -411,12 +416,22 @@ body {
     margin-left: -50%;
 }
 
-.copy-button:hover .copy-tooltip {
-    visibility: visible;
+/* CSS copy button and tooltip */
+.copy-button {
+    background: url("./assets/copy-icon.svg") no-repeat center;
 }
 
-.copy-button:active .copy-tooltip {
-    visibility: hidden;
+.copy-tooltip {
+    width: 3rem;
+}
+
+/* CSS populate button and tooltip */
+.populate-button {
+    background: url("./assets/populate-icon.svg") no-repeat center;
+}
+
+.populate-tooltip {
+    width: 5.75rem;
 }
 
 /* Parameter container */

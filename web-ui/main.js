@@ -410,6 +410,21 @@ function renderConversion(inst, abi=false) {
       navigator.clipboard.writeText(copyBtn[buttonId]);
     })
   }
+
+  // Populate button function
+  let populateBtn = {
+    "asm-populate": inst.asm,
+    "binary-populate": binaryData,
+    "hex-populate": '0x' + inst.hex
+  }
+
+  for (let buttonId in populateBtn) {
+    let button = document.getElementById(buttonId);
+    button.addEventListener("click", () => {
+      input.value = populateBtn[buttonId];
+      input.focus(); // Pop up text cursor in the instruction input
+    });
+  }
 }
 
 /**
