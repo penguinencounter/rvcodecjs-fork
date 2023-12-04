@@ -548,9 +548,11 @@ export class Decoder {
       } else if (op_imm_64) {
         shamtWidth = 6;
         this.isa = 'RV128I';  // Set ISA here to avoid assumed ISA of RV64I below
-      } else if (this.#config.ISA === COPTS_ISA.RV32I || (shamt_6 === '0' && shamt_5 === '0')) {
+      } else if (this.#config.ISA === COPTS_ISA.RV32I ||
+                (this.#config.ISA === COPTS_ISA.AUTO && shamt_6 === '0' && shamt_5 === '0')) {
         shamtWidth = 5;
-      } else if (this.#config.ISA === COPTS_ISA.RV64I || shamt_6 === '0') {
+      } else if (this.#config.ISA === COPTS_ISA.RV64I ||
+                (this.#config.ISA === COPTS_ISA.AUTO && shamt_6 === '0')) {
         shamtWidth = 6;
       } else {
         shamtWidth = 7;
