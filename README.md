@@ -47,6 +47,7 @@ Supported instruction sets and extensions:
     - D (double-precision floating point) instruction set
     - Q (quad-precision floating point) instruction set
     - C (compressed) instruction set
+- Privileged instruction set *(partially)*
 
 ## Contributing
 
