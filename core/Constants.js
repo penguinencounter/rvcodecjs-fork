@@ -597,6 +597,16 @@ export const ISA_C = {
   'c.ebreak': { isa: 'C', xlens: 0b111, fmt: 'CR-type', funct4: '1001', rdRs1Mask: 0b00, rdRs1Val: 0, rs2Val: 0, opcode: C_OPCODE.C2 },
 }
 
+// Privileged instruction set
+export const ISA_Priv = {
+  // Trap-Return Instructions
+  sret: { isa: 'Priv', fmt: 'I-type', funct12: '000100000010', funct3: '000', opcode: OPCODE.SYSTEM },
+  mret: { isa: 'Priv', fmt: 'I-type', funct12: '001100000010', funct3: '000', opcode: OPCODE.SYSTEM },
+
+  // Interrupt-Management Instructions
+  wfi: { isa: 'Priv', fmt: 'I-type', funct12: '000100000101', funct3: '000', opcode: OPCODE.SYSTEM },
+}
+
 // ISA per opcode
 export const ISA_OP = {
   // RV32I
@@ -724,6 +734,9 @@ export const ISA_SYSTEM = {
   [ISA_RV32I['ecall'].funct3]: {
     [ISA_RV32I['ecall'].funct12]:   'ecall',
     [ISA_RV32I['ebreak'].funct12]:  'ebreak',
+    [ISA_Priv['sret'].funct12]:     'sret',
+    [ISA_Priv['mret'].funct12]:     'mret',
+    [ISA_Priv['wfi'].funct12]:      'wfi',
   },
   [ISA_Zicsr['csrrw'].funct3]:  'csrrw',
   [ISA_Zicsr['csrrs'].funct3]:  'csrrs',
@@ -1476,4 +1489,5 @@ export const FRAG = {
 export const ISA = Object.assign({},
   ISA_RV32I, ISA_RV64I, ISA_RV128I,
   ISA_Zifencei, ISA_Zicsr,
-  ISA_M, ISA_A, ISA_F, ISA_D, ISA_Q, ISA_C);
+  ISA_M, ISA_A, ISA_F, ISA_D, ISA_Q, ISA_C,
+  ISA_Priv);
