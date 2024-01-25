@@ -37,10 +37,10 @@ const searchResults = document.getElementById('search-result-list');
  * Upon loading page or changing history, trigger conversion from hash paramters
  */
 let originalDocumentTitle = '';
-let titleSuffix = '';
+let titlePrefix = '';
 window.addEventListener('load', (e) => {
   originalDocumentTitle = document.title;
-  titleSuffix = ' - ' + originalDocumentTitle.split(' ')[0];
+  titlePrefix = originalDocumentTitle.split(' ')[0] + ' - ';
   hashChange(e.target.location.hash);
 });
 window.addEventListener('popstate', (e) => {
@@ -180,7 +180,7 @@ function runResult(addToHistory = true) {
   }
 
   // Set title
-  document.title = emptyQuery ? originalDocumentTitle : q + titleSuffix;
+  document.title = emptyQuery ? originalDocumentTitle : titlePrefix + q;
 
   // Reset UI and exit early if query is empty
   if (q === "") {
