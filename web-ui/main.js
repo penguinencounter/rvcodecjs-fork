@@ -229,7 +229,12 @@ function renderConversion(inst, abi=false) {
     }
     if (typeof frag.asm === "number") {
       // Convert to hexadecimal
-      asm = '0x' + frag.asm.toString(16);
+      let hex = '0x' + frag.asm.toString(16);
+      // move negative sign to front
+      if (hex.includes('-')) {
+        hex = '-' + hex.replace('-', '');
+      }
+      asm = hex;
     }
     return `<span class='${"fragId-" + frag.id}' style='color:var(${color})'>${asm}</span>`;
   });
