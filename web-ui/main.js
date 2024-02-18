@@ -227,6 +227,10 @@ function renderConversion(inst, abi=false) {
     if (frag.mem) {
       asm = '(' + asm + ')';
     }
+    if (typeof frag.asm === "number") {
+      // Convert to hexadecimal
+      asm = frag.asm.toString(16) + 'h';
+    }
     return `<span class='${"fragId-" + frag.id}' style='color:var(${color})'>${asm}</span>`;
   });
 
