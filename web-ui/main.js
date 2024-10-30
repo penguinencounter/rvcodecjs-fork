@@ -520,11 +520,12 @@ window.addEventListener("click", (event) => {
   }
 )
 
+// Add ISA to sidebar
 const isaSideBar = document.querySelector("#isa-sets-container")
 for (let ISA_Type in ISA_List) {
   let isaSet = document.createElement("details")
   let isaSetSummary = document.createElement("summary")
-  isaSetSummary.textContent = ISA_Type
+  isaSetSummary.textContent = ISA_Type.replace(/^ISA_/, "")
   isaSetSummary.classList = "result-row-data"
   isaSet.appendChild(isaSetSummary)
 
