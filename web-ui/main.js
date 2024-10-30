@@ -7,7 +7,7 @@
  */
 
 import { Instruction, convertRegToAbi } from "../core/Instruction.js";
-import { FRAG } from "../core/Constants.js";
+import { FRAG, ISA_List } from "../core/Constants.js";
 import { configDefault, COPTS_ISA } from "../core/Config.js";
 import { buildSearchResults, clearSearchResults, renderSearchResults, iterateSearchResults, getSelectedMnemonic, buildPlaceholder, getPlaceholderString } from "./completion.js";
 
@@ -519,3 +519,25 @@ window.addEventListener("click", (event) => {
     }
   }
 )
+
+const isaSideBar = document.querySelector("#isa-sets-container")
+for (let ISA_Type in ISA_List) {
+  let isaSet = document.createElement("details")
+  let isaSetSummary = document.createElement("summary")
+  isaSetSummary.textContent = ISA_Type
+  isaSetSummary.classList = "result-row-data"
+  isaSet.appendChild(isaSetSummary)
+
+  for (let inst in ISA_List[ISA_Type]) {
+    let instNode = document.createElement("button")
+    instNode.textContent = inst
+    instNode.classList = "asm-data asm-button"
+    instNode.onclick = ()=>{
+      input.value = inst
+      runResult()
+    }
+    isaSet.appendChild(instNode)
+  }
+  
+  isaSideBar.appendChild(isaSet)
+}

@@ -66,6 +66,40 @@ body {
     margin: 0px;
 
     display: grid;
+    grid-template-columns: 1fr 4fr;
+
+    color: var(--color-fg);
+    background-color: var(--color-bg);
+}
+
+#sidebar {
+    height: 100vh;
+    overflow: auto;
+    width: 100%;
+}
+
+#isa-sets-container{
+    padding: 1ch 0 0 1ch;
+    display: grid;
+}
+
+.asm-button {
+    margin: auto 0;
+    height: 1.5rem;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    color: var(--color-fg);
+}
+
+#workspace{
+    min-width: 265px; /* minimum screen width supported */
+
+    height: 100vh;
+
+    display: grid;
     grid-template-rows: 0.5fr minmax(4ch, 12vh) minmax(30ch, 10fr);
     gap: 1ch;
 

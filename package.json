@@ -7,7 +7,9 @@
   },
   "scripts": {
     "test": "node ./tests/decoderTest.js && node ./tests/encoderTest.js",
-    "open": "http-server -a localhost -p 1234 -c-1 -o ./web-ui/index.html"
+    "open": "http-server -a localhost -p 1234 -c-1 -o ./web-ui/index.html",
+    "publish": "bash publish.sh",
+    "clean": "rm -r public"
   },
   "repository": {
     "type": "git",

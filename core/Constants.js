@@ -1491,3 +1491,10 @@ export const ISA = Object.assign({},
   ISA_Zifencei, ISA_Zicsr,
   ISA_M, ISA_A, ISA_F, ISA_D, ISA_Q, ISA_C,
   ISA_Priv);
+
+export const ISA_List = {
+  ISA_RV32I, ISA_RV64I, ISA_RV128I,
+  ISA_Zifencei, ISA_Zicsr,
+  ISA_M, ISA_A, ISA_F, ISA_D, ISA_Q, ISA_C,
+  ISA_Priv
+}
