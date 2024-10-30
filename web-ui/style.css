@@ -66,7 +66,16 @@ body {
     margin: 0px;
 
     display: grid;
-    grid-template-columns: max-content 4fr;
+    grid-template-rows: 0.5fr minmax(30ch, 10fr);
+    gap: 1ch;
+
+    color: var(--color-fg);
+    background-color: var(--color-bg);
+}
+
+#workspace{
+    display: grid;
+    grid-template-columns: 15ch 5fr;
 
     color: var(--color-fg);
     background-color: var(--color-bg);
@@ -75,16 +84,18 @@ body {
 #sidebar {
     overflow: auto;
     display: grid;
-    padding: 5ch 1ch 5ch 2ch;
+    max-width: fit-content;
+    min-height: 12ch;
+    padding: 5ch 1ch 5ch 1.25ch;
 }
 
 #isa-sets-container{
-    min-width: 6rem;
     padding: 1ch;
     overflow: auto;
-
+    min-height: 10ch;
     border: 1px solid var(--color-fg);
     background-color: var(--color-bg);
+    display: none;
 }
 
 .asm-button {
@@ -98,17 +109,11 @@ body {
     color: var(--color-fg);
 }
 
-#workspace{
-    min-width: 265px; /* minimum screen width supported */
-
-    height: 100vh;
-
+#search-modal-results {
     display: grid;
-    grid-template-rows: 0.5fr minmax(4ch, 12vh) minmax(30ch, 10fr);
+    grid-template-rows: minmax(4ch, 12vh) minmax(30ch, 10fr);
     gap: 1ch;
-
-    color: var(--color-fg);
-    background-color: var(--color-bg);
+    padding-right: 15ch;  /* center itself because of sidebar */
 }
 
 /* Page title */
@@ -320,8 +325,19 @@ body {
     display: none;
 }
 
+/* Break point for laptops/desktops*/
+@media (max-width: 992px) {
+    #search-modal-results {
+        padding-right: 0;
+    }
+}
+
 /* Break point for tablets and smaller*/
 @media (max-width: 768px) {
+    #search-modal-results {
+        padding-right: 0;
+    }
+
     /* Set one column (either title or data) per row*/
     .rows-container{
         column-gap: 0;
@@ -369,6 +385,18 @@ body {
 @media (max-width: 480px) {
     body {
         font-size: 0.85rem;
+    }
+
+    #workspace {
+        grid-template-columns: 10ch 5fr;
+    }
+
+    #sidebar {
+        padding: 1ch 0ch 1ch 1ch;
+    }
+
+    #isa-sets-container {
+        padding: 0 0 0 0.5ch;
     }
 
     #title-box{

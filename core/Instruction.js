@@ -38,6 +38,11 @@ export class Instruction {
    */
   asm;
   /**
+   * Name of instruction
+   * @type String
+   */
+  name;
+  /**
    * Binary representation of instruction
    * @type String
    */
@@ -123,6 +128,7 @@ export class Instruction {
 
     // Get assembly representation
     this.asm = decoder.asm;
+    this.name = decoder.asm.split(" ")[0]
 
     // Get fragments
     this.asmFrags = decoder.asmFrags;

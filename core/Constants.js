@@ -1485,16 +1485,25 @@ export const FRAG = {
   FRM: 11,
 }
 
-// Entire ISA
+/* Flattened list of all the instructions */
 export const ISA = Object.assign({},
   ISA_RV32I, ISA_RV64I, ISA_RV128I,
   ISA_Zifencei, ISA_Zicsr,
   ISA_M, ISA_A, ISA_F, ISA_D, ISA_Q, ISA_C,
   ISA_Priv);
 
-export const ISA_List = {
-  ISA_RV32I, ISA_RV64I, ISA_RV128I,
-  ISA_Zifencei, ISA_Zicsr,
-  ISA_M, ISA_A, ISA_F, ISA_D, ISA_Q, ISA_C,
-  ISA_Priv
+  /* Hierarchy of instructions per ISA subset */
+export const ISA_Subsets = {
+  RV32I: ISA_RV32I,
+  RV64I: ISA_RV64I,
+  RV128I: ISA_RV128I,
+  Zifencei: ISA_Zifencei,
+  Zicsr: ISA_Zicsr,
+  M: ISA_M,
+  A: ISA_A,
+  F: ISA_F,
+  D: ISA_D,
+  Q: ISA_Q,
+  C: ISA_C,
+  Priv: ISA_Priv
 }

@@ -7,7 +7,7 @@
  */
 
 import { Instruction, convertRegToAbi } from "../core/Instruction.js";
-import { FRAG, ISA_List } from "../core/Constants.js";
+import { FRAG, ISA_Subsets } from "../core/Constants.js";
 import { configDefault, COPTS_ISA } from "../core/Config.js";
 import { buildSearchResults, clearSearchResults, renderSearchResults, iterateSearchResults, getSelectedMnemonic, buildPlaceholder, getPlaceholderString } from "./completion.js";
 
@@ -217,6 +217,16 @@ function renderConversion(inst, abi=false) {
   // Display format and ISA
   document.getElementById('fmt-data').innerText = inst.fmt;
   document.getElementById('isa-data').innerText = inst.isa;
+  const instName = inst.name;
+  const isa = inst.isa;
+  if (isa.startsWith('RV128') || isa.endsWith('Q') ||
+    isa.endsWith("C") || isa.endsWith("D")) {
+    document.getElementById('isa-url').innerText = `Not available`
+  } else {
+    document.getElementById('isa-url').innerHTML = `
+    <a href="//riscv-software-src.github.io/riscv-unified-db/manual/html/isa/20240411/insts/${instName}.html" 
+    target="_blank">${instName}</a>`
+  }
 
   // Display assembly instruction
   let asmInst;
@@ -521,24 +531,25 @@ window.addEventListener("click", (event) => {
 )
 
 // Add ISA to sidebar
-const isaSideBar = document.querySelector("#isa-sets-container")
-for (let ISA_Type in ISA_List) {
-  let isaSet = document.createElement("details")
-  let isaSetSummary = document.createElement("summary")
-  isaSetSummary.textContent = ISA_Type.replace(/^ISA_/, "")
-  isaSetSummary.classList = "result-row-data"
-  isaSet.appendChild(isaSetSummary)
+const isaSideBar = document.getElementById("isa-sets-container");
+for (let ISA_Type in ISA_Subsets) {
+  const isaSet = document.createElement("details");
+  const isaSetSummary = document.createElement("summary");
+  isaSetSummary.textContent = ISA_Type;
+  isaSetSummary.classList = "result-row-data";
+  isaSet.appendChild(isaSetSummary);
 
-  for (let inst in ISA_List[ISA_Type]) {
-    let instNode = document.createElement("button")
-    instNode.textContent = inst
-    instNode.classList = "asm-data asm-button"
+  for (let inst in ISA_Subsets[ISA_Type]) {
+    const instNode = document.createElement("button");
+    instNode.textContent = inst;
+    instNode.classList = "asm-data asm-button";
     instNode.onclick = ()=>{
-      input.value = inst
-      runResult()
+      input.value = inst;
+      runResult();
     }
-    isaSet.appendChild(instNode)
+    isaSet.appendChild(instNode);
   }
   
-  isaSideBar.appendChild(isaSet)
+  isaSideBar.appendChild(isaSet);
 }
+isaSideBar.style.display = 'initial';
