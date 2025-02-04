@@ -224,7 +224,7 @@ function renderConversion(inst, abi=false) {
     document.getElementById('isa-url').innerText = `Not available`
   } else {
     document.getElementById('isa-url').innerHTML = `
-    <a href="//riscv-software-src.github.io/riscv-unified-db/manual/html/isa/20240411/insts/${instName}.html" 
+    <a href="//riscv-software-src.github.io/riscv-unified-db/manual/html/isa/isa_20240411/insts/${instName}.html" 
     target="_blank">${instName}</a>`
   }
 
