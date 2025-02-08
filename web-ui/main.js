@@ -219,8 +219,7 @@ function renderConversion(inst, abi=false) {
   document.getElementById('isa-data').innerText = inst.isa;
   const instName = inst.name;
   const isa = inst.isa;
-  if (isa.startsWith('RV128') || isa.endsWith('Q') ||
-    isa.endsWith("C") || isa.endsWith("D")) {
+  if (isa.startsWith('RV128') || isa.endsWith('Q')) {
     document.getElementById('isa-url').innerText = `Not available`
   } else {
     document.getElementById('isa-url').innerHTML = `
