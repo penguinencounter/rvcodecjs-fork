@@ -7,7 +7,7 @@
  */
 
 import { Instruction, convertRegToAbi } from "../core/Instruction.js";
-import { FRAG } from "../core/Constants.js";
+import { FRAG, ISA_Subsets } from "../core/Constants.js";
 import { configDefault, COPTS_ISA } from "../core/Config.js";
 import { buildSearchResults, clearSearchResults, renderSearchResults, iterateSearchResults, getSelectedMnemonic, buildPlaceholder, getPlaceholderString } from "./completion.js";
 
@@ -37,10 +37,10 @@ const searchResults = document.getElementById('search-result-list');
  * Upon loading page or changing history, trigger conversion from hash paramters
  */
 let originalDocumentTitle = '';
-let titleSuffix = '';
+let titlePrefix = '';
 window.addEventListener('load', (e) => {
   originalDocumentTitle = document.title;
-  titleSuffix = ' - ' + originalDocumentTitle.split(' ')[0];
+  titlePrefix = originalDocumentTitle.split(' ')[0] + ' - ';
   hashChange(e.target.location.hash);
 });
 window.addEventListener('popstate', (e) => {
@@ -180,7 +180,7 @@ function runResult(addToHistory = true) {
   }
 
   // Set title
-  document.title = emptyQuery ? originalDocumentTitle : q + titleSuffix;
+  document.title = emptyQuery ? originalDocumentTitle : titlePrefix + q;
 
   // Reset UI and exit early if query is empty
   if (q === "") {
@@ -217,6 +217,15 @@ function renderConversion(inst, abi=false) {
   // Display format and ISA
   document.getElementById('fmt-data').innerText = inst.fmt;
   document.getElementById('isa-data').innerText = inst.isa;
+  const instName = inst.name;
+  const isa = inst.isa;
+  if (isa.startsWith('RV128') || isa.endsWith('Q')) {
+    document.getElementById('isa-url').innerText = `Not available`
+  } else {
+    document.getElementById('isa-url').innerHTML = `
+    <a href="//riscv-software-src.github.io/riscv-unified-db/manual/html/isa/isa_20240411/insts/${instName}.html" 
+    target="_blank">${instName}</a>`
+  }
 
   // Display assembly instruction
   let asmInst;
@@ -528,3 +537,27 @@ window.addEventListener("click", (event) => {
     }
   }
 )
+
+// Add ISA to sidebar
+const isaSideBar = document.getElementById("isa-sets-container");
+for (let ISA_Type in ISA_Subsets) {
+  const isaSet = document.createElement("details");
+  const isaSetSummary = document.createElement("summary");
+  isaSetSummary.textContent = ISA_Type;
+  isaSetSummary.classList = "result-row-data";
+  isaSet.appendChild(isaSetSummary);
+
+  for (let inst in ISA_Subsets[ISA_Type]) {
+    const instNode = document.createElement("button");
+    instNode.textContent = inst;
+    instNode.classList = "asm-data asm-button";
+    instNode.onclick = ()=>{
+      input.value = inst;
+      runResult();
+    }
+    isaSet.appendChild(instNode);
+  }
+  
+  isaSideBar.appendChild(isaSet);
+}
+isaSideBar.style.display = 'initial';
